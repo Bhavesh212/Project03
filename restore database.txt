@@ -1,0 +1,13 @@
+run
+{
+allocate channel ch00 device type disk format '/mnt47/dbbkp';
+recover database until logseq 48308;
+ }
+
+
+
+
+
+/appl/atulorc11/product/11.1.0/db_1/admin/atuldldb_atulorctst/diag/rdbms/atuldldb/atuldldb/trace
+
+
