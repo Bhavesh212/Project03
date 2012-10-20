@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Subject: Steps to put the database in noarchivelog mode.
 
 
@@ -23,3 +24,11 @@ Cd /appl/atulorc11/product/11.1.0/db_1/appsutil/scripts/testdb_appstst
 ./ addbctl.sh start
 
 ./addlnctl.sh start testdb
+=======
+Project01
+=========
+
+Initial Project
+
+Hello Everyone.....
+>>>>>>> 45a6516c56dcb45b8ad98368f3db5f29f95c5f3e
