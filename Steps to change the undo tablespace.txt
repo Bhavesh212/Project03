@@ -1,0 +1,53 @@
+Steps to change the undo tablespace
+==================================
+
+1.) Create new undo tablespace
+
+CREATE UNDO TABLESPACE APPS_UNDOTS1 DATAFILE 
+  '/FC1HU/atulorc/atulorcdata/apps1_undo101.dbf' SIZE 30720M AUTOEXTEND OFF,
+  '/FC1HU/atulorc/atulorcdata/apps1_undo102.dbf' SIZE 30720M AUTOEXTEND OFF,
+  '/FC1HU/atulorc/atulorcdata/apps1_undo103.dbf' SIZE 30720M AUTOEXTEND OFF,
+ONLINE
+RETENTION NOGUARANTEE
+BLOCKSIZE 8K
+FLASHBACK ON;
+
+2.) Switch to new undo tablespace
+
+alter system set undo_tablespace=APPS_UNDOTS1;
+
+3.) Make the change in initatulorc.ora
+chnage the parameter 
+undo_tablespace=APPS_UNDOTS1
+
+4.) fire the following query to know any pending offline transaction. Wait till the following query returns no row.
+SELECT 
+   a.usn,
+   a.name,
+   b.status,
+   c.tablespace_name,
+   d.addr,
+   e.sid, 
+   e.serial#,
+   e.username,
+   e.program,
+   e.machine, 
+   e.osuser
+   FROM 
+   v$rollname a, 
+   v$rollstat b, 
+   dba_rollback_segs c, 
+   v$transaction d, 
+   v$session e 
+   WHERE 
+   a.usn=b.usn AND 
+   a.name=c.segment_name AND
+   a.usn=d.xidusn AND
+   d.addr=e.taddr AND
+   b.status='PENDING OFFLINE';
+
+4.) Bounce the database
+
+5.) Drop the old undo tablespace
+
+drop tablespace APPS_UNDOTS2 including contents and datafiles;
